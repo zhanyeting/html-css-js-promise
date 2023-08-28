@@ -1,0 +1,54 @@
+<!--
+ * @作者: kerwin
+ * @公众号: 大前端私房菜
+-->
+<!--
+ * @作者: kerwin
+ * @公众号: 大前端私房菜
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+
+        html,body{
+            height: 100%;
+        }
+
+        .left,.right{
+            width: 200px;
+            height: 100%;
+
+        }
+        .left{
+            background:yellow;
+            float:left;
+        }
+        .right{
+            background:red;
+            float:right;  /* float: left*/
+        }
+
+        .center{
+            width: calc(100% - 400px);
+            height: 100%;
+            background:blue;
+            float:left;  /* display: inline-block; */
+            /* 设置为 inline-block 时，上面 .right 中的 float 必须为 right，不能为 left */
+        }
+    </style>
+</head>
+<body>
+    <div class="left"></div>
+    <div class="right"></div>
+    <div class="center"></div>
+   
+</body>
+</html>

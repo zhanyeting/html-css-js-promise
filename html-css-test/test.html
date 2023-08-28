@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            
+            font-size: 5vw;
+        }
+        /* vw 单位转换  rem  */
+        /* 100vw = 320px
+            5vw = 16px
+        
+        */
+        .box1 {
+            width: 100vw;
+            height: 500px;
+            background: yellow;
+            display: flex;
+            padding: 20px 0 0 20px;
+        }
+        .box2 {
+            width: 100%;
+            height: 1000px;
+            background: red;
+        }
+
+        /* 太极图 */
+        .taiji {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(to top, white 50%, black 50%)
+        }
+        .taiji:hover {
+            transition: all 2s;
+            transform: rotate(1.2turn);
+        }
+        /* .circle1, .circle2 {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .circle1 {
+            background: radial-gradient(circle, white 20%, black 27%)
+        }
+        .circle2 {
+            background: radial-gradient(circle, black 20%, white 27%)
+        } */
+        .taiji::before, .taiji::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: aqua;
+        }
+        .taiji::before{
+            background: radial-gradient(white 20%, black 27%);
+        }
+        .taiji::after{
+            background: radial-gradient(black 20%, white 27%);
+        }
+
+        /* 伪元素实现对话框 */
+        .chart-div{
+            position: relative; 
+            width:150px;
+            height: 36px;
+            border:1px solid black;
+            border-radius:5px;
+            background: rgba(245,245,245,1);
+            font-size: 16px;
+            margin: 20px;
+            line-height: 36px;
+            padding-left: 30px;
+        }
+        .chart-div::before, .chart-div::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;    
+            position: absolute;     
+            top: 6px;   
+        }
+        .chart-div::before {
+            left: -11px;
+            border-right-color: #000;
+        }
+        .chart-div::after {
+            left: -10px;
+            border-right-color: white;
+        }
+
+        /* 伪元素实现双边丝带 */
+        .title1{
+            display: inline-block;
+            position: relative;
+            margin-left: 100px;
+            margin-bottom: 20px;
+        }
+
+        .title1 span {
+            position: relative;
+            display: inline-block;
+            height: 32px;
+            line-height: 32px;
+            color: white;
+            font-size: 16px;
+            background-color: #dc5947;
+            padding: 0 10px;
+            box-shadow: 0 10px 6px -9px rgba(0, 0, 0, 0.6);
+            /* x轴  y轴  blur虚化程度  spread扩大程度，负值表示缩小   阴影部分的颜色*/
+            z-index: 2;  /* after伪元素在div之上，用z-index改变一下堆叠顺序*/
+        }
+        .title1::before, .title1::after{
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            bottom: -6px;
+            border-style: solid;
+            border-color: #dc5947;
+        }
+        .title1::before {
+            left: -32px;
+            border-width: 16px 26px 16px 16px;
+            border-left-color: transparent;  
+        }
+        .title1::after {
+            right: -32px;
+            border-width: 16px 16px 16px 26px;
+            border-right-color: transparent;
+        }
+        .title1 span::before, .title1 span::after { 
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            bottom: -6px;
+            border-style: solid;
+            border-width: 3px 5px;
+        }
+        .title1 span::before {
+            left: 0;
+            border-right-color: #431711;
+            border-color: #972f22 #972f22 transparent transparent;
+        }
+        .title1 span::after{
+            right: 0;
+            border-color: #431711 transparent transparent #431711;
+        }
+
+        /* 右边丝带 */
+        .title2 {
+            display: inline-block;
+            height: 32px;
+            line-height: 32px;
+            padding: 0 15px;
+            font-size: 16px;
+            color: white;
+            background-color: #dc5947;
+            margin-left: 50px;
+            position: relative;
+        }
+        .title2::before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: -2.4px;
+            left: 0;
+            border-width: 2px 4px;
+            border-style: solid;
+            border-color: transparent #972f22 #972f22 transparent;
+        }
+        .title2::after {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            right: -9px;
+            top: 0;
+            border: 16px solid #dc5947;
+            border-width: 16px 10px 16px 0;
+            border-right-color: transparent;
+        }
+        /* 多个箭头丝带 */
+        .mutiple_sidai {
+            min-width: 600px;
+            height: 100px;
+            background: linear-gradient(transparent 0%, rgb(155, 241, 155) 40%) bisque;
+            display: flex;
+            align-items: center;
+            padding-left: 30px;
+        }
+        .title3 {
+            position: relative;
+            display: inline-block;
+            height: 32px;
+            line-height: 32px;
+            padding: 0 15px;
+            background-color: #dc5947;
+            margin-right: 20px;
+            font-size: 16px;
+            color: #fff;
+        }
+        .title3::before {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: -16px;
+            border: 16px solid transparent;
+            border-left-width: 0;
+            border-right-color: #dc5947;
+        }
+        .title3::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: -16px;
+            border-style: solid;
+            border-width: 16px 16px 16px 0;
+            border-color: #dc5947 transparent #dc5947 #dc5947;
+        }
+        
+        /* 悬挂丝带 */
+        .hang_tag {
+            height: 200px;
+            background-color: #eee;
+            margin: 50px;
+            box-shadow: 0 5px 6px -2px rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        .title4, .title5 {
+            width: 200px;
+            height: 140px;
+            overflow: hidden;
+            position: absolute;
+            top: -6px;
+        }
+        .title4 { left: -6px; }
+        .title5 { right: -6px; }
+        .title4 span, .title5 span {
+            display: inline-block;
+            width: 180px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #dc5947;
+            border: 1px dashed #fff;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 0 0 3px #dc5947, 0 12px 6px -6px rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 26px;
+        }
+        .title4 span {
+            left: -42px;
+            transform: rotate(-45deg);
+        }
+        .title5 span {
+            right: -42px;
+            transform: rotate(45deg);
+        }
+        .title4::before, .title5::after {
+            content: '';
+            width: 6px;
+            height: 9px;
+            background-color: #50120a; 
+            border-radius: 6px;
+            position: absolute;
+            bottom: 8px;
+            z-index: -1;
+        }
+        .title5::after { right: 0; }
+        .title4::after, .title5::before {
+            content: '';
+            width: 9px;
+            height: 6px;
+            background-color: #8b3024; 
+            border-radius: 6px;
+            z-index: -1;
+            position: absolute;
+        }
+        .title4::after { right: 68px; }
+        .title5::before { left: 68px; }
+       
+
+        /* 五角星 */
+        .pentagram {
+            position: relative;
+            width: 0;
+            height: 0;
+            margin: 50px auto;
+            border-style: solid;
+            border-width: 0 100px 70px 100px;
+            border-color: transparent transparent red transparent;
+            transform: rotate(35deg);
+            -webkit-transform: rotate(35deg);
+            -moz-transform: rotate(35deg);
+            -ms-transform: rotate(35deg);
+            -o-transform: rotate(35deg);
+        }
+        .pentagram::before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 26px 66px 26px;
+            border-color: transparent transparent blue transparent;
+            transform: rotate(-35deg);
+            position: absolute;
+            top: -41px;
+            left: -63px;
+
+        }
+        .pentagram::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-bottom: 70px solid green;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;position: absolute;
+            top: 6px;
+            left: -108px;
+            transform: rotate(-70deg);
+        }
+       
+        /* 水滴💧 */
+        .drop_water {
+            margin-top: 50px;
+            margin-right: 20px;
+            width: 100px;
+            height: 100px;
+            background-color: #ace3ff;
+            border-radius: 50%;
+            box-shadow: 0 6px 2px -1px rgba(0, 0, 0, 0.7);
+            /* box-shadow: 0px 6px 0 #3f475a; */
+            position: relative;
+        }
+        .drop_water::before {
+            position: absolute;
+            top: -33px;
+            left: 12px;
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 38px 50px 38px;
+            border-color: transparent transparent #ace3ff transparent;
+        }
+        .drop_water::after {
+            position: absolute;
+            top: 55px;
+            left: 25px;
+            content: '';
+            width: 30px;
+            height: 15px;
+            border-radius: 50%;
+            /* background-color: red; */
+            /* box-shadow: 5px 12px 4px blue, -5px 11px 4px yellow, 0px 14px 4px green; */
+            box-shadow: 5px 12px 4px #ace3ff, -5px 11px 4px #ace3ff, 0px 14px 4px #4d576e;
+            box-shadow: 5px 12px 4px #ace3ff, -5px 11px 4px #ace3ff, 0 15px 4px 0px rgba(0,0,0,0.6);
+            transform: rotate(30deg);
+        }
+
+        /* 绚丽流动边框 */
+        @keyframes surround {
+            0%,100% {
+                clip: rect(0px, 110px, 2px, 0px);
+            }
+
+            25% {
+                clip: rect(0px, 2px, 110px, 0px);
+            }
+
+            50% {
+                clip: rect(108px, 110px, 110px, 0px);
+            }
+
+            75% {
+                clip: rect(0px, 110px, 110px, 108px);
+            }
+        }
+        .box-line1:before,
+        .box-line1:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            content: "";
+            z-index: 99;
+            margin: -5%;
+            animation: surround linear infinite 8s;
+            box-shadow: inset 0 0 0 2px #69ca62;
+            clip: rect(0px 110px 2px 0px);
+            /* clip: rect(0px 2px 110px 0px); */
+            /* clip: rect(108px 110px 110px 0px); */
+            /* clip: rect(0px 110px 108px 108px); */
+        }
+        .box-line1:before {
+            animation-delay: -4s;
+        }
+        .box-line1 {
+            border: 1px solid #69ca62;
+            position: absolute;
+            top: 300px;
+            left: 200px;
+            width: 100px;
+            height: 100px;
+            margin: 50px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background-color: #399953; */
+            /* background-repeat: no-repeat;
+            background-size: 50% 50%, 50% 50%;
+            background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+            background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
+            animation: rotate 5s linear infinite; */
+        }
+        .box-line1 span {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            overflow: hidden;
+            position: absolute;
+            z-index: 1;
+            border-radius: 5px;
+        }
+        .box-line1 span::before {
+            content: '';
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            background-color: blue;
+            background-repeat: no-repeat;
+            background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+            background-size: 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+            background-image: linear-gradient(red, red), linear-gradient(yellow, yellow), linear-gradient(green, green), linear-gradient(blue, blue);
+            animation: rotate 3s linear infinite;
+            z-index: 0;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(1turn) }
+        }
+        .box-line1 span::after {
+            content: '';
+            display: inline-block;
+            width: 90px;
+            height: 90px;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: #eee;
+            border-radius: 5px;
+        }
+
+        /* 折扇 */
+        .folding-fan {
+            height: 200px;
+            padding: 20px;
+        }
+        ul li { list-style: none; }
+        .folding-fan ul { 
+            height: 200px;
+            margin: auto;
+            background-color: #fff;
+            position: relative;
+        }
+        .folding-fan ul>li:not(:nth-child(7)) { 
+            /* opacity 具有动画效应，搭配transition实现过度效果；visibility 没有动画效应 */
+            opacity:0;   
+            /* visibility: hidden; */
+        }
+        .folding-fan ul:hover>li{
+            opacity: 1;
+            /* visibility: visible; */
+         }
+        .folding-fan ul>li { 
+            width: 30px;
+            height: 140px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            margin-left: -15px;
+            /* 不能用transform, 只能用margin-left，因为下面指定了 origin */
+            /* transform: translateX(-50%); */ 
+            transform-origin: bottom;
+            transition: all linear 2s;
+            background-color: red;
+            text-align: center;
+            box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.6);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .folding-fan ul:hover>li:nth-child(1) { 
+            transform: rotate(90deg);
+        }
+        .folding-fan ul:hover>li:nth-child(13) { 
+            transform: rotate(-90deg);
+        }
+        .folding-fan ul:hover>li:nth-child(2) { 
+            transform: rotate(75deg);
+        }
+        .folding-fan ul:hover>li:nth-child(12) { 
+            transform: rotate(-75deg);
+        }
+        .folding-fan ul:hover>li:nth-child(3) { 
+            transform: rotate(60deg);
+        }
+        .folding-fan ul:hover>li:nth-child(11) { 
+            transform: rotate(-60deg);
+        }
+        .folding-fan ul:hover>li:nth-child(4) { 
+            transform: rotate(45deg);
+        }
+        .folding-fan ul:hover>li:nth-child(10) { 
+            transform: rotate(-45deg);
+        }
+        .folding-fan ul:hover>li:nth-child(5) { 
+            transform: rotate(30deg);
+        }
+        .folding-fan ul:hover>li:nth-child(9) { 
+            transform: rotate(-30deg);
+        }
+        .folding-fan ul:hover>li:nth-child(6) { 
+            transform: rotate(15deg);
+        }
+        .folding-fan ul:hover>li:nth-child(8) { 
+            transform: rotate(-15deg);
+        }
+        .folding-fan ul>li:nth-child(1), .folding-fan ul>li:nth-child(13){ 
+            background-color: purple;
+        }
+        .folding-fan ul>li:nth-child(2), .folding-fan ul>li:nth-child(12){ 
+            background-color: lime;
+        }
+        .folding-fan ul>li:nth-child(3), .folding-fan ul>li:nth-child(11){ 
+            background-color: blue;
+        }
+        .folding-fan ul>li:nth-child(4), .folding-fan ul>li:nth-child(10){ 
+            background-color: green;
+        }
+        .folding-fan ul>li:nth-child(5), .folding-fan ul>li:nth-child(9){ 
+            background-color: yellow;
+        }
+        .folding-fan ul>li:nth-child(6), .folding-fan ul>li:nth-child(8){ 
+            background-color: orange;
+        }
+
+        /* 跳动的小人 */
+        .running-child{
+            width: 180px;
+            height: 300px;
+            margin: 0 20px;
+            background-color: white;
+            background-image: url(./charector.png);
+            animation: runningChild 1s step-end infinite;
+            /* animation: runningChild 1s steps(1,end) infinite; */
+        }
+        @keyframes runningChild {
+            0% {
+                background-position: 0px 0;
+            }
+            14% {
+                background-position: -180px 0;
+            }
+            28% {
+                background-position: -360px 0;
+            }
+            42% {
+                background-position: -540px 0;
+            }
+            56% {
+                background-position: -720px 0;
+            }
+            70% {
+                background-position: -900px 0;
+            }
+            84% {
+                background-position: -1080px 0;
+            }
+            /* 100% {
+                background-position: -1260px 0;
+            } */
+        }
+
+        /* 正方体 cube */
+        .cube {
+            width: calc(100%-40px);
+            height: 400px;
+            margin: 20px;
+            background-color: white;
+            padding-top: 20px;
+        }
+        .cube-box {
+            width: 300px;
+            height: 300px;
+            margin: 0px auto;
+            border: 5px solid gray;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(30deg)  rotateY(30deg);
+            animation: runCube 5s alternate infinite;
+        }
+        .square {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+            background: red;
+            text-align: center;
+            line-height: 200px;
+            font-size: 50px;
+            opacity: 0.8;
+        }
+        @keyframes runCube {
+            0% {
+                transform: rotateX(30deg)  rotateY(30deg);
+            }
+            /* 20% {
+                transform: rotateZ(30deg);
+            } */
+            100% {
+                transform: rotateX(360deg)  rotateY(360deg) rotateZ(360deg);
+            }
+            /* 60% {
+                transform: rotateZ(360deg);
+            }
+            80% {
+                transform: rotateX(30deg)  rotateY(30deg);
+            }
+            100% {
+                transform: rotateZ(0deg);
+            } */
+        }
+        .square:nth-child(1) {
+            background-color: orange;
+            transform: translateZ(100px);
+        }
+        .square:nth-child(6) {
+            background-color: rgb(207, 115, 207);
+            transform: translateZ(-100px);
+        }
+        .square:nth-child(2) {
+            background-color: yellow;
+            transform: translateX(-100px) rotateY(-90deg) rotateZ(90deg);
+        }
+        .square:nth-child(4) {
+            background-color: skyblue;
+            transform: translateX(100px) rotateY(90deg) rotateZ(-90deg);
+        }
+        .square:nth-child(3) {
+            background-color: lightgreen;
+            transform: translateY(100px) rotateX(-90deg);
+        }
+        .square:nth-child(5) {
+            background-color: pink;
+            transform: translateY(-100px) rotateX(90deg) rotateZ(180deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- 伪元素实现对话框 -->
+    <div class="chart-div">这是一个聊天框</div>
+
+    <!-- 伪元素实现 双边丝带 -->
+    <div class="sidai">
+        <div class="title1"><span>距离结束还有10天</span></div>
+        <!-- 右边丝带 -->
+        <span class="title2">距离结束还有10天</span>
+    </div>
+
+    <!-- 多个箭头丝带 -->
+    <div class="mutiple_sidai">
+        <span class="title3 left">距离结束还有10天</span>
+        <span class="title3 center">距离结束还有10天</span>
+        <span class="title3 right">距离结束还有10天</span>
+    </div>
+
+    <!-- 悬挂丝带 -->
+    <div class="hang_tag">
+        <div class="title4"><span>企业热门动态</span></div>
+        <div class="title5"><span>企业热门动态</span></div>
+    </div>
+
+    
+
+
+    <!-- vw 和 rem 单位转换应用 -->
+    <div class="box1">
+        <!-- 伪元素实现太极图 -->
+        <div class="taiji">
+            <!-- <div class="circle1"></div>
+            <div class="circle2"></div> -->
+        </div>
+        <!-- 五角星  -->
+        <div class="pentagram"></div>
+        <!-- 水滴 -->
+        <div class="drop_water"></div>
+        <!-- 绚丽流动边框 -->
+        <div class="box-line1">
+            <span></span>
+        </div>
+    </div>
+    <div class="box2">
+        <!-- 折扇   fan：扇子 -->
+        <div class="folding-fan">
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+            </ui>
+        </div>
+
+        <!-- 跳动的小人 -->
+        <div class="running-child"></div>
+
+        <!-- 正方体 cube-->
+        <div class="cube">
+            <div class="cube-box">
+                <div class="square">1</div>
+                <div class="square">2</div>
+                <div class="square">3</div>
+                <div class="square">4</div>
+                <div class="square">5</div>
+                <div class="square">6</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

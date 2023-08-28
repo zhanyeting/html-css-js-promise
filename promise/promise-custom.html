@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./promise-custom.js"></script>
+</head>
+<body>
+    <script>
+        const myp1 = new MyPromise((resolve, reject) => {
+            // resolve(11111);
+            // reject('failed');
+            setTimeout(() => {
+                resolve(1111);
+                // reject(2222);
+            }, 1000);
+        });
+        myp1.then(res => {
+            console.log('success==========', res);
+            return new MyPromise((resolve, reject) => {
+                // resolve('inner -- 111')
+                // reject('inner --- 222');
+                setTimeout(() => {
+                    resolve('inner-resolve - async -- 111');
+                    // reject('reject - inner-reject- async -- 222');
+                }, 2000)
+            });
+        }, err => {
+            console.log('error========', err);
+            return new MyPromise((resolve, reject) => {
+                // resolve('err - inner -- resolve 111')
+                // reject('err - inner --- reject 222');
+                setTimeout(() => {
+                    // resolve('err -async- inner-resolve - async -- 111');
+                    reject('err -async- inner-reject - async -- 222');
+                }, 1000)
+            });
+        }).then((res) => {
+            console.log('second then->success===========', res);
+        }).catch(err => {
+            console.log('catch - error===========', err);
+        });
+        
+        myp1.then(res => {
+            console.log('success2222==========', res);
+            return new MyPromise((resolve, reject) => {
+                // resolve('inner -- 111')
+                // reject('inner --- 222');
+                setTimeout(() => {
+                    // resolve('inner - async -- 111');
+                    reject('reject - inner - async -- 111');
+                }, 2000)
+            });
+        }, err => {
+            console.log('error222=========', err);
+            return new MyPromise((resolve, reject) => {
+                // resolve('err - inner -- 111')
+                reject('err - inner --- 222');
+                // setTimeout(() => {
+                //     // resolve('err - inner - async -- 111');
+                //     reject('reject - inner - async -- 111');
+                // }, 2000)
+            });
+        }).then((res) => {
+            console.log('second then->success222222===========', res);
+        }).catch(err => {
+            console.log('catch - error222222===========', err);
+        });
+    </script>
+</body>
+</html>

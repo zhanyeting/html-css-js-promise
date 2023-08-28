@@ -1,0 +1,55 @@
+<!--
+ * @作者: kerwin
+ * @公众号: 大前端私房菜
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+
+        html,body{
+            height: 100%;
+        }
+
+        /* .box1{
+            height: 100%;
+            background:red;
+            float:left;
+            width: calc(100% - 200px);
+        }
+
+        .box2{
+            width: 200px;
+            height: 100%;
+            background:yellow;
+            float:left;
+        } */
+
+        .box1{
+            width: calc(100% - 200px);
+            height: 100%;
+            background:red;
+            display: inline-block; /* float: left; */
+        }
+
+        .box2{
+            width:200px;
+            height: 100%;
+            background:yellow;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+</body>
+</html>
